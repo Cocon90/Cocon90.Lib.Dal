@@ -1,0 +1,2 @@
+# Cocon90.Lib.Dal
+The library is mainly used for database sqlserver, SQLite, mysql, Oracle, PostgreSql etc. the operation of and query type conversion is simple the, at the same time also directly supports sqlserver, SQLite, mysql, PostgreSql four types of database ORM model mapping, and common business logic series. At the same time Dal library allows users to simultaneously handle different types and different types of database and database.
