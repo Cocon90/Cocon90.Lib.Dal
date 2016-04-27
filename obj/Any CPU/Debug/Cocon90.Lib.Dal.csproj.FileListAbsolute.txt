@@ -1,0 +1,6 @@
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Debug\Cocon90.Lib.Dal.dll
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Debug\Cocon90.Lib.Dal.pdb
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Debug\System.Data.SQLite.dll
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\obj\Any CPU\Debug\Cocon90.Lib.Dal.csprojResolveAssemblyReference.cache
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\obj\Any CPU\Debug\Cocon90.Lib.Dal.dll
+D:\项目开发\Cocon90.Lib\Cocon90.Lib\code\Cocon90.Lib.Dal\obj\Any CPU\Debug\Cocon90.Lib.Dal.pdb

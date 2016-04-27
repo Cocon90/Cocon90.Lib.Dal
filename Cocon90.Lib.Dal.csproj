@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C7D1159C-0990-4010-A40A-85F1620D4CEB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cocon90.Lib.Dal</RootNamespace>
+    <AssemblyName>Cocon90.Lib.Dal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Cocon90.Lib.Dal.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\postgresql\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=5.1.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\mysql\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.2.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\postgresql\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\sqlite\Auto\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\sqlce\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataHelper.cs" />
+    <Compile Include="DataHelperFactory.cs" />
+    <Compile Include="DataHelperType.cs" />
+    <Compile Include="Error\InitException.cs" />
+    <Compile Include="Error\InstenceExcetpion.cs" />
+    <Compile Include="Error\LengthExcetpion.cs" />
+    <Compile Include="Error\ModelAttrbuteException.cs" />
+    <Compile Include="IDataHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rule\AttributeParam.cs" />
+    <Compile Include="Rule\Attribute\ColumnAttribute.cs" />
+    <Compile Include="Rule\Attribute\RelationAttribute.cs" />
+    <Compile Include="Rule\ColumnInfo.cs" />
+    <Compile Include="Rule\IUseless.cs" />
+    <Compile Include="Rule\ColumnPoster.cs" />
+    <Compile Include="Rule\ModelPoster.cs" />
+    <Compile Include="Rule\SqlBatch.cs" />
+    <Compile Include="Rule\ISetModel.cs" />
+    <Compile Include="Rule\ModelData.cs" />
+    <Compile Include="Rule\Attribute\GetDataFrom.cs" />
+    <Compile Include="Rule\Attribute\GetModelFrom.cs" />
+    <Compile Include="Rule\Parameter.cs" />
+    <Compile Include="Rule\TableSchema.cs" />
+    <Compile Include="Tools\TransactionExcutor.cs" />
+    <Compile Include="Rule\TransactionOption.cs" />
+    <Compile Include="Rule\EffectEntry.cs" />
+    <Compile Include="Rule\IModel.cs" />
+    <Compile Include="Rule\PagedModel.cs" />
+    <Compile Include="Rule\EditedEntry.cs" />
+    <Compile Include="Rule\AliseEntry.cs" />
+    <Compile Include="Tools\DataModel.cs" />
+    <Compile Include="Tools\ModelHelper.cs" />
+    <Compile Include="Tools\SqlHelper.cs" />
+    <Compile Include="Utility\OdbcDataHelper.cs" />
+    <Compile Include="Utility\OledbDataHelper.cs" />
+    <Compile Include="Utility\PostgreSqlDataHelper.cs" />
+    <Compile Include="Utility\SQLDataHelper.cs" />
+    <Compile Include="Utility\FirebirdDataHelper.cs" />
+    <Compile Include="Utility\SqlCeDataHelper.cs" />
+    <Compile Include="Utility\SQLiteDataHelper.cs" />
+    <Compile Include="Utility\MySqlDataHelper.cs" />
+    <Compile Include="Utility\OracleDataHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\sqlite\Auto\System.Data.SQLite.dll" />
+    <Content Include="Lib\firebird\FirebirdSql.Data.FirebirdClient.dll" />
+    <Content Include="Lib\mysql\MySql.Data.dll" />
+    <Content Include="Lib\postgresql\Mono.Security.dll" />
+    <Content Include="Lib\postgresql\Npgsql.dll" />
+    <Content Include="Lib\postgresql\Npgsql.xml" />
+    <Content Include="Lib\postgresql\zh-CN\Npgsql.resources.dll" />
+    <Content Include="Lib\oracle\Oracle.ManagedDataAccess.dll" />
+    <Content Include="Lib\sqlce\System.Data.SqlServerCe.dll" />
+    <Content Include="Lib\sqlite\x64\System.Data.SQLite.dll" />
+    <Content Include="Lib\sqlite\x86\System.Data.SQLite.dll" />
+    <Content Include="Lib\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dics\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

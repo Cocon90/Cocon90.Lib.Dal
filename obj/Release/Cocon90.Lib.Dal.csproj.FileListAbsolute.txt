@@ -1,0 +1,12 @@
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Cocon90.Lib.Dal.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Cocon90.Lib.Dal.pdb
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Mono.Security.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\MySql.Data.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Npgsql.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Oracle.ManagedDataAccess.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\System.Data.SQLite.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\System.Data.SqlServerCe.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\Npgsql.xml
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\bin\Release\zh-CN\Npgsql.resources.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\obj\Release\Cocon90.Lib.Dal.dll
+D:\Cocon90.Lib\code\Cocon90.Lib.Dal\obj\Release\Cocon90.Lib.Dal.pdb

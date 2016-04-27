@@ -1,0 +1,1795 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cocon90.Lib.Dal</name>
+    </assembly>
+    <members>
+        <member name="T:Cocon90.Lib.Dal.DataHelper">
+            <summary>
+            数据库基本访问类，能常用数据库均通用
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.IDataHelper">
+            <summary>
+            表示ADO操作接口
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.beginTransaction">
+            <summary>
+            创建一个事务。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.beginTransaction(System.Data.IsolationLevel)">
+            <summary>
+            传入一个隔离级别，并创建一个事务。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScopeObject">
+            <summary>
+            建立一个事务域对像，与createTransactionScope()方法的区别是，主程序在调用此方法后，只能通过disposeTransactionScopeObject方法来提交事务，优点是调用程序无需引入System.Transactions.dll即可使用事务。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScopeObject(Cocon90.Lib.Dal.Rule.TransactionScopeOption)">
+            <summary>
+            建立一个事务域对像，与createTransactionScope()方法的区别是，主程序在调用此方法后，只能通过disposeTransactionScopeObject方法来提交事务，优点是调用程序无需引入System.Transactions.dll即可使用事务。
+            </summary>
+            <param name="transactionScopeOption"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScopeObject(Cocon90.Lib.Dal.Rule.TransactionScopeOption,Cocon90.Lib.Dal.Rule.TransactionOptions)">
+            <summary>
+            建立一个事务域对像，与createTransactionScope()方法的区别是，主程序在调用此方法后，只能通过disposeTransactionScopeObject方法来提交事务，优点是调用程序无需引入System.Transactions.dll即可使用事务。
+            </summary>
+            <param name="transactionScopeOption"></param>
+            <param name="transactionOptions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScope">
+            <summary>
+            创建一个事务域，如需要手动提交事务，请调用其Complate方法。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScope(System.Transactions.TransactionScopeOption)">
+            <summary>
+            创建一个事务域，传入事务域的模式，如需要提交事务，请调用其Complate方法。
+            </summary>
+            <param name="transactionScopeOption"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createTransactionScope(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions)">
+            <summary>
+            创建一个事务域，传入事务域的模式和设置，如需要提交事务，请调用其Complate方法。
+            </summary>
+            <param name="transactionScopeOption"></param>
+            <param name="transactionOptions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.disposeTransactionScopeObject(System.Object,System.Boolean)">
+            <summary>
+            释放事务域，传入要提交并释放的事务域对像(与disposeTransactionScope方法完全相同，仅仅是参数不同)，和是否提交事务，最后释放事务域资源。返回操作是否成功完成。
+            </summary>
+            <param name="transactionScopeObject"></param>
+            <param name="isCommit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.disposeTransactionScope(System.Transactions.TransactionScope,System.Boolean)">
+            <summary>
+            释放事务域，传入要提交并释放的事务域对像(与disposeTransactionScopeObject方法完全相同，仅仅是参数不同)，和是否提交事务，最后释放事务域资源。返回操作是否成功完成。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createCommond(System.String,System.Data.CommandType,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            创建一个DbCommand实例，注意DBCommand被创建后，对应的Connection将保持打开，所以请在使用完DBCommand后，及时关闭它的Connection。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createParameter(System.String,System.Object)">
+            <summary>
+            创建一个DbParameter实例
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createParamters(System.Object[][])">
+            <summary>
+            创建一个DbParameter数组实例.
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createParamters(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            创建一个DbParameter数组实例.
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createDataAdapter(System.Data.Common.DbCommand)">
+            <summary>
+            创建一个DataAdapter实例
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.createConnection">
+            <summary>
+            创建一个DbConnection实例，并打开连接。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.execBatch(System.Collections.Generic.IEnumerable{Cocon90.Lib.Dal.Rule.SqlBatch},System.Boolean,System.Boolean)">
+            <summary>
+            批量使用事务执行Sql
+            </summary>
+            <param name="sqlBatch"></param>
+            <param name="isCommit"></param>
+            <param name="allowThrowException"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getScalar(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回第一行第一列
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getScalarProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回第一行第一列
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getString(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回String类型的第一行第一列，如果结果为空，则返回""。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getStringProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回String类型的第一行第一列，如果结果为空，则返回""。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getNumber(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回int类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getNumberProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回int类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getLong(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回long类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getLongProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回long类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getFloat(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回float类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getFloatProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回float类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getDateTime(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回DateTime类型的第一行第一列，如果结果为空，则返回"1970-1-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getDateTimeProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回DateTime类型的第一行第一列，如果结果为空，则返回"1970-1-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getBoolean(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回bool类型的第一行第一列，如果结果为空，则返回"false"。为True的语句是："on","1","true","yes" 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getBooleanProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回bool类型的第一行第一列，如果结果为空，则返回"false"。为True的语句是："on","1","true","yes" 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.execNoQuery(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)更新操作 返回受影响行数，执行失败返回-1
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.execNoQueryProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的更新操作 返回受影响行数，执行失败返回-1
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getDataSet(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回结果DataSet
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getDataSetProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果DataSet
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getTable(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回结果表，如果结果为空，则返回一个空的表
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getTableProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果表，如果结果为空，则返回一个空的表
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListString(System.Boolean,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行tsql(可以是带参的)操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合，isDistinct表示是否结果是否去重复 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListStringProc(System.Boolean,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合。isDistinct表示是否结果是否去重复 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListString(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行tsql(可以是带参的)操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合（不去重复）
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListStringProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合（不去重复）
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListLong(System.Boolean,System.Int64,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行tsql(可以是带参的)操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合，isDistinct表示是否结果是否去重复 ， convertErrorDefaultValue表示当转换类型出错时使用的默认值。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListLongProc(System.Boolean,System.Int64,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合，isDistinct表示是否结果是否去重复 ， convertErrorDefaultValue表示当转换类型出错时使用的默认值。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListLong(System.Int64,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行tsql(可以是带参的)操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合，(不去重复) 参数：convertErrorDefaultValue表示当转换类型出错时使用的默认值。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getListLongProc(System.Int64,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果列的第一列，如果结果为空，则返回一个空泛型集合，(不去重复) 参数：convertErrorDefaultValue表示当转换类型出错时使用的默认值。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.IDataHelper.getSqlHelper">
+            <summary>
+            获取 当前DataHelper相应的SqlHelper对像
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.IDataHelper.ParamChar">
+            <summary>
+            获取 当前DataHelper相应的参数前坠
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.IDataHelper.ConnectionString">
+            <summary>
+            取得或设置 当前实例对应的连接字符串
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelper.toBool(System.String)">
+            <summary>
+            对Bool类型进行转换，boolString为True的语句是："on","1","true","yes" 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelper.getBooleanProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回bool类型的第一行第一列，如果结果为空，则返回"false"。为True的语句是："on","1","true","yes" 
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.DataHelperFactory">
+            <summary>
+            DataHelper工厂，它会根据配置文件自动生成一个新的DataHelper实例。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelperFactory.CreateInstence(System.String)">
+            <summary>
+            <para>取得数据库连接实例 配置文件中的connectionStrings中：</para>
+            <para>连接语句中请用${app}代表应用程序所在目录（应用程序时，是所在目录，如:d:\proj\bin；WEB网站时，是网站目录,如:d:\myweb。），</para>
+            <para>使用${Environment.SpecialFolder枚举名}表示对应的特殊目录，注意，区分大小写，结尾统一没有‘\\’（如${System}表示：C:\Windows\system32），</para>
+            <para>MSSQL请添加 name="ConnectionString" providerName="Cocon90.Lib.Dal.Utility.SQLDataHelper"  connectionString="server=.;database=Cocon90_OA;uid=sa;pwd=123456;"</para>
+            <para>SQLite请添加 name="ConnectionString" providerName="Cocon90.Lib.Dal.Utility.SQLiteDataHelper" connectionString="Data Source=${app}\data\cpms.db;"</para>
+            <para>MySQL请添加 name="ConnectionString"  providerName="Cocon90.Lib.Dal.Utility.MySqlDataHelper" connectionString="Server=localhost;Port=3306;Database=data;User=root;Password=123456;"</para>
+            <para>PostgreSql请添加 name="ConnectionString"  providerName="Cocon90.Lib.Dal.Utility.PostgreSqlDataHelper" connectionString="Server=127.0.0.1;Port=5432;Database=mydb;User Id=postgres;Password=123456;"</para>
+            <para>其它数据库也是一样，providerName为Utility下的类全名，连接语句为：connectionString</para>
+            <para>需要注意的是，如果给连接字符串的Name指定了其它值，则会影响其它类如ModelHelper的调用。</para>
+            <para>如果连接字符串加密，请将密文写在： key="IsConnectionStringEncry" value="1" 到AppSettings节点下 </para>
+            </summary>
+            <returns>返回IDataHelper数据库基本操作接口</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelperFactory.CreateInstence(System.String,System.String)">
+            <summary>
+            <para>连接语句中请用${app}代表应用程序所在目录（应用程序时，是所在目录，如:d:\proj\bin；WEB网站时，是网站目录,如:d:\myweb。），</para>
+            <para>使用${Environment.SpecialFolder枚举名}表示对应的特殊目录，注意，区分大小写，结尾统一没有‘\\’（如${System}表示：C:\Windows\system32），</para>
+            <para>MSSQL请使用 providerName="Cocon90.Lib.Dal.Utility.SQLDataHelper"  connectionString="server=.;database=Cocon90_OA;uid=sa;pwd=123456;"</para>
+            <para>SQLite请使用 providerName="Cocon90.Lib.Dal.Utility.SQLiteDataHelper" connectionString="Data Source=${app}data\cpms.db;"</para>
+            <para>MySQL请使用 providerName="Cocon90.Lib.Dal.Utility.MySqlDataHelper" connectionString="Server=localhost;Port=3306;Database=data;User=root;Password=123456"</para>
+            <para>PostgreSql请添加 name="ConnectionString"  providerName="Cocon90.Lib.Dal.Utility.PostgreSqlDataHelper" connectionString="Server=127.0.0.1;Port=5432;Database=mydb;User Id=postgres;Password=123456;"</para>
+            <para>其它数据库也是一样，providerName为Utility下的类全名，连接语句为：connectionString</para>
+            <para>需要注意的是，如果给连接字符串的Name指定了其它值，则会影响其它类如ModelHelper的调用。</para>
+            <para>如果连接字符串加密，请将密文写在： key="IsConnectionStringEncry" value="1" 到AppSettings节点下 </para>
+            </summary>
+            <returns>返回IDataHelper数据库基本操作接口</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelperFactory.CreateInstence(Cocon90.Lib.Dal.DataHelperType,System.String)">
+            <summary>
+            <para>连接语句中请用${app}代表应用程序所在目录（应用程序时，是所在目录，如:d:\proj\bin；WEB网站时，是网站目录,如:d:\myweb。），</para>
+            <para>使用${Environment.SpecialFolder枚举名}表示对应的特殊目录，注意，区分大小写，结尾统一没有‘\\’（如${System}表示：C:\Windows\system32），</para>
+            <para>MSSQL请使用 providerName="Cocon90.Lib.Dal.Utility.SQLDataHelper"  connectionString="server=.;database=Cocon90_OA;uid=sa;pwd=123456;"</para>
+            <para>SQLite请使用 providerName="Cocon90.Lib.Dal.Utility.SQLiteDataHelper" connectionString="Data Source=${app}\\data\\cpms.db;"</para>
+            <para>MySQL请使用 providerName="Cocon90.Lib.Dal.Utility.MySqlDataHelper" connectionString="Server=localhost;Port=3306;Database=data;User=root;Password=123456"</para>
+            <para>PostgreSql请添加 name="ConnectionString"  providerName="Cocon90.Lib.Dal.Utility.PostgreSqlDataHelper" connectionString="Server=127.0.0.1;Port=5432;Database=mydb;User Id=postgres;Password=123456;"</para>
+            <para>其它数据库也是一样，providerName为Utility下的类全名，连接语句为：connectionString</para>
+            <para>需要注意的是，如果给连接字符串的Name指定了其它值，则会影响其它类如ModelHelper的调用。</para>
+            <para>如果连接字符串加密，请将密文写在： key="IsConnectionStringEncry" value="1" 到AppSettings节点下 </para>
+            </summary>
+            <returns>返回IDataHelper数据库基本操作接口</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelperFactory.HandlerConnectionString(System.String)">
+            <summary>
+            取得加工后的连接语句
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.DataHelperFactory.des(System.String,System.String)">
+            <summary>
+            DES解密字符串
+            </summary>
+            <param name="decryptString">待解密的字符串</param>
+            <param name="decryptKey8Letter">解密密钥,要求为8位,和加密密钥相同</param>
+            <returns>解密成功返回解密后的字符串，失败返源串</returns>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.DataHelperType">
+            <summary>
+            数据库辅助类的类型
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Error.InitException">
+            <summary>
+            初始化错误
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Error.InstenceException">
+            <summary>
+            创建实例时引发的异常
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Error.LengthExcetpion">
+            <summary>
+            长度不一致引发的异常
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Error.ModelAttrbuteException">
+            <summary>
+            实体属性前面的特性标记不正确时引发的异常。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.AttributeParam">
+            <summary>
+            存放实体属性的常用临时变量值
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.AttributeParam.MainTableAlisa">
+            <summary>
+            取得类对像对应的主表的别名。（程序每启动一次，生成一次新的别名：mt_前8位Guid值）
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.Attribute.RelationAttribute">
+            <summary>
+            关系实体
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.RelationAttribute.#ctor(System.String,Cocon90.Lib.Dal.Rule.Attribute.Direction)">
+            <summary>
+            构建一个Relation标记。
+            </summary>
+        </member>
+        <!-- 对于成员“P:Cocon90.Lib.Dal.Rule.Attribute.RelationAttribute.DbFrom”忽略有格式错误的 XML 注释 -->
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.RelationAttribute.Direction">
+            <summary>
+            获取或设置 执行方向，当向上查找时，相应列应该为实体类集合，向下查找时，相应列应该为实体类。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.Attribute.Direction">
+            <summary>
+            属性相应方向，向下或向上。
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.Attribute.Direction.ToDown">
+            <summary>
+            向下查找 (向下查找时，相应列应该为实体类，可进行增改)
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.Attribute.Direction.ToUp">
+            <summary>
+            向上查找 (向上查找时，相应列应该为实体类集合，不可进行增改)
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.IUseless">
+            <summary>
+            返回无用的列名
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.ColumnPoster">
+            <summary>
+            临时类
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnPoster.ColumnName">
+            <summary>
+            实际最终要返回的列的列名(不包括别名)
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnPoster.DataFromAttribute">
+            <summary>
+            数据获取的表中的相关信息
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.ModelPoster">
+            <summary>
+            临时类
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelPoster.PropertyName">
+            <summary>
+            实际最终要返回的实体中的属性
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelPoster.ModelFromAttribute">
+            <summary>
+            实体数据的获取方式属性。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelPoster.PropertyType">
+            <summary>
+            属性的类型
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.ISetModel">
+            <summary>
+            允许传入一个对像进行赋值操作。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.ModelData`1">
+            <summary>
+            包含实体集合的类  泛型T表示集合中元素的类型。
+            </summary>
+            <typeparam name="T">表示集合中元素的类型</typeparam>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.ModelData`1.ToString">
+            <summary>
+            返回唯一编码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.ModelData`1.GetPagedList(System.Int32,System.Int32)">
+            <summary>
+            分页获取List属性所表示的集合中的数据。传入请求页数，和总页数。
+            </summary>
+            <param name="pageNum"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.ModelData`1.SetListValue(System.Data.DataTable)">
+            <summary>
+            传入一个DataTable对像，将它想办法转为List集合，并付给当前对像的List属性。
+            </summary>
+            <param name="dataTable"></param>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelData`1.List">
+            <summary>
+            获取或设置 数据类型集合。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelData`1.TopOneModel">
+            <summary>
+            获取 数据集合中的第一个实体。如List为空，则返回NULL或者其数据类型默认值。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelData`1.ID">
+            <summary>
+            获取 本ModelData对象的唯一标志
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelData`1.ListCount">
+            <summary>
+            获取 集体中元素的数量。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ModelData`1.TType">
+            <summary>
+            获取泛型T的类型。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom">
+            <summary>
+            <para>获取数据的方法，其中 tableAlisa为空的含义是：当IsTableUnit为True时，tableAlisa为空，则自动取胜主表别名。当IsTableUnit为False时，tableAlisa为空，则自动取随机别名。</para>
+            <para>tableName：传入所在表的表名（若为空表示多表联合本类表查询）；</para> 
+            <para>tableAlias：如果是多个相同的表的查询，可以使用不同的别名来区分，tableAlisa为空的含义是：当IsTableUnit为True时，tableAlisa为空，则自动取胜主表别名。当IsTableUnit为False时，tableAlisa为空，则自动取随机别名。；</para>
+            <para>columnName：对应的列名，若此项为空，则系统自动使用对应属性名称作为列名；</para>
+            <para>tableColumnAsEqual_left：目标数据表中的列（作为“=”号左侧条件）；</para>
+            <para>currentColumnAsEqual_right：当前类对象对应的数据表中的列（作为“=”号右侧条件）；</para>
+            <para>isTableUnit：表示当前属性是否要使用多表联合查询还是赋值查询。True表示使用多表联合查询,False表示使用赋值查询。需要注意的是：如果此值为False，则当tableAlias为空时，系统将会自动赋予随机数做别名。</para>
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.#ctor(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            <para>获取数据的方法，其中 tableAlisa为空的含义是：当IsTableUnit为True时，tableAlisa为空，则自动取胜主表别名。当IsTableUnit为False时，tableAlisa为空，则自动取随机别名。</para>
+            <para>tableName：传入所在表的表名（若为空表示多表联合本类表查询）；</para> 
+            <para>tableAlias：如果是多个相同的表的查询，可以使用不同的别名来区分，tableAlisa为空的含义是：当IsTableUnit为True时，tableAlisa为空，则自动取胜主表别名。当IsTableUnit为False时，tableAlisa为空，则自动取随机别名。；</para>
+            <para>columnName：对应的列名，若此项为空，则系统自动使用对应属性名称作为列名；</para>
+            <para>tableColumnAsEqual_left：目标数据表中的列（作为“=”号左侧条件）；</para>
+            <para>currentColumnAsEqual_right：当前类对象对应的数据表中的列（作为“=”号右侧条件）；</para>
+            <para>isTableUnit：表示当前属性是否要使用多表联合查询还是赋值查询。True表示使用多表联合查询,False表示使用赋值查询。需要注意的是：如果此值为False，则当tableAlias为空时，系统将会自动赋予随机数做别名。</para>
+            </summary>
+            <param name="tableName">传入所在表的表名(若为空表示多表联合本类表查询)</param>
+            <param name="tableAlias">如果是多个相同的表的查询，可以使用不同的别名来区分</param>
+            <param name="columnName">对应的列名，若此项为空，则系统自动使用对应属性名称作为列名</param>
+            <param name="tableColumnAsEqual_left">目标数据表中的列（作为“=”号右侧条件）</param>
+            <param name="currentColumnAsEqual_right">当前类对象对应的数据表中的列（作为“=”号左侧条件）</param>
+            <param name="isTableUnit">当前属性是否要使用多表联合查询还是赋值查询。True表示使用多表联合查询, ，False表示使用赋值查询，使用赋值查询时，将查询关系中的第1个值赋值给宿主属性，如：select className,teacherName,(select top1 count(*) from SuudentTab) studentCount from ClassTab。 需要注意的是：如果此值为False，则当tableAlias为空时，系统将会自动赋予随机数做别名。</param>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            <para>获取数据的方法，此重载表示IsTableUnit为False（使用赋值查询）。系统将tableAlisa自动定义为随机别名。</para>
+            <para>tableName：传入所在表的表名（若为空表示多表联合本类表查询）；</para> 
+            <para>columnName：对应的列名，若此项为空，则系统自动使用对应属性名称作为列名；</para>
+            <para>tableColumnAsEqual_left：目标数据表中的列（作为“=”号左侧条件）；</para>
+            <para>currentColumnAsEqual_right：当前类对象对应的数据表中的列（作为“=”号右侧条件）；</para>
+            </summary>
+            <param name="tableName">传入所在表的表名(若为空表示多表联合本类表查询)</param>
+            <param name="columnName">对应的列名，若此项为空，则系统自动使用对应属性名称作为列名</param>
+            <param name="tableColumnAsEqual_left">目标数据表中的列（作为“=”号右侧条件）</param>
+            <param name="currentColumnAsEqual_right">当前类对象对应的数据表中的列（作为“=”号左侧条件）</param>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.isNameOk(System.String)">
+            <summary>
+            检测名称是否合法
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.ToString">
+            <summary>
+            简易描述
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.GetTableNameWithAlisa">
+            <summary>
+            取得表名和别名，中间用空格隔开，如：CaseTab ct
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsTabNameIsNull">
+            <summary>
+            判断表名是否为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsTabAlisaIsNull">
+            <summary>
+            判断表的别名是否为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsColumnNameIsNull">
+            <summary>
+            判断全名是否为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsColumnAsEqual_leftIsNull">
+            <summary>
+            判断左条件是否为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsColumnAsEqual_rightIsNull">
+            <summary>
+            判断右条件是否为空
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.TableName">
+            <summary>
+            所在的表名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.TableAlias">
+            <summary>
+            所在的表名的别名（可以为NULL）
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.ColumnName">
+            <summary>
+            数据代表的列名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.TableColumnAsEqual_left">
+            <summary>
+            条件，左侧条件列名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.CurrentColumnAsEqual_right">
+            <summary>
+            条件，右侧条件列名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetDataFrom.IsTableUnit">
+            <summary>
+            当前属性是否要使用多表联合查询还是赋值查询。True表示使用多表联合查询 ，False表示使用赋值查询，使用赋值查询时，将查询关系中的第1个值赋值给宿主属性，如：select className,teacherName,(select top 1 count(*) from SuudentTab) studentCount from ClassTab。需要注意的是：如果此值为False，则当tableAlias为空时，系统将会自动赋予随机数做别名。
+            </summary>
+        </member>
+        <!-- 对于成员“T:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom”忽略有格式错误的 XML 注释 -->
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.#ctor(System.String,System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            取得实体集合数据。 
+            </summary>
+            <param name="tableName">查询时要联合的表的表名</param>
+            <param name="orderBy">查询时要联合的表的排序列名</param>
+            <param name="isAsc">查询时，排序列是按正顺(true)还是倒序(false)</param>
+            <param name="tableColumnAsEqual_left">查询时，要联合表中所对应的列名，作为等号左条件。</param>
+            <param name="currentPropertyAsEqual_right">查询时，要当前绑定实体中所对应的属性名，作为等号右条件。</param>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.getSelectSql">
+            <summary>
+            取得当前的查询语句。右侧值条件，将自动使用“@currentPropertyAsEqual_right”。返回的语句如：select * from unitTab where unitId=@currentPropertyAsEqual_right order by CTime desc
+            </summary>
+            <param name="mainModel"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.TableName">
+            <summary>
+            获取或设置 查询时要联合的表的表名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.OrderBy">
+            <summary>
+            获取或设置 查询时要联合的表的排序列名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.IsAsc">
+            <summary>
+            获取或设置 查询时，排序列是按正顺(true)还是倒序(false)
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.TableColumnAsEqual_left">
+            <summary>
+            获取或设置 查询时，要联合表中所对应的列名，作为等号左条件。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Attribute.GetModelFrom.CurrentPropertyAsEqual_right">
+            <summary>
+            获取或设置 查询时，要当前绑定实体中所对应的属性名，作为等号右条件。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.Parameter">
+            <summary>
+            参数
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.Parameter.op_Implicit(System.Data.Common.DbParameter)~Cocon90.Lib.Dal.Rule.Parameter">
+            <summary>
+            定义由DbParameter到Parameter的隐式转换
+            </summary>
+            <param name="dbParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Parameter.Name">
+            <summary>
+            参数键.请用@开头。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.Parameter.Value">
+            <summary>
+            参数值.
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.TableSchema">
+            <summary>
+            表结构
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.TableSchema.IsTableNameEqual(Cocon90.Lib.Dal.Rule.TableSchema,Cocon90.Lib.Dal.Rule.TableSchema)">
+            <summary>
+            判断两个表结构的表名是否相同。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.TableSchema.TableName">
+            <summary>
+            表名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.TableSchema.SchemaName">
+            <summary>
+            架构名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.TableSchema.Columns">
+            <summary>
+            所有的列
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.ColumnSchema">
+            <summary>
+            列结构
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.ColumnName">
+            <summary>
+            列名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.DataType">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.Description">
+            <summary>
+            列描述
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.Len">
+            <summary>
+            长度 
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.DotLen">
+            <summary>
+            小数位数
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.IsIdentity">
+            <summary>
+            是否是标志列
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.IsPrimaryKey">
+            <summary>
+            是否是主键列
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.IsNullable">
+            <summary>
+            是否允许空
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.ColumnSchema.DefaultValue">
+            <summary>
+            默认值 请包含Default关键字。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Tools.TransactionExcutor">
+            <summary>
+            事务执行者对像，但是需要传入一个新的代理DataHelper来构造。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.#ctor(Cocon90.Lib.Dal.IDataHelper)">
+            <summary>
+            在某个DataHelper上，构造一个事务执行者,并开始事务。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.#ctor(Cocon90.Lib.Dal.IDataHelper,System.Data.IsolationLevel)">
+            <summary>
+            在某个DataHelper上，构造一个事务执行者,并开始事务。可以传入隔离级别（事务锁定行为）
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.Rollback(System.Boolean)">
+            <summary>
+            执行Transaction对像的事务回滚操作，可以传入是否执行完成后，释放TransactionExcutor的连接对象
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.Commit(System.Boolean)">
+            <summary>
+            执行Transaction对像的事务提交操作，可以传入是否执行完成后，释放TransactionExcutor的连接对象
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.Dispose">
+            <summary>
+            释放此对象占用的资源。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getConnection">
+            <summary>
+            返回一个DbConnection对像
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.createCommond(System.String,System.Data.CommandType,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            创建一个DbCommand对像
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.createDataAdapter(System.Data.Common.DbCommand)">
+            <summary>
+            创建一个DbDataAdapter对像
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.createParameter(System.String,System.Object)">
+            <summary>
+            创建一个DbParameter对像
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.execNoQuery(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行ExecuteNonQuery命令（Insert、Delete、Update） 返回受影响行数。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.execNoQueryProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程 返回受影响行数。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getScalar(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行ExecuteScalar命令（Select） 返回执行结果表的第一行第一列值
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getScalarProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回第一行第一列
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.toBool(System.String)">
+            <summary>
+            对Bool类型进行转换，boolString为True的语句是："on","1","true","yes" 
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getBoolean(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回bool类型的第一行第一列，如果结果为空，则返回"false"。为True的语句是："on","1","true","yes" 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getBooleanProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回bool类型的第一行第一列，如果结果为空，则返回"false"。为True的语句是："on","1","true","yes" 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getDataSet(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回结果DataSet
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getDataSetProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果DataSet
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getDateTime(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回DateTime类型的第一行第一列，如果结果为空，则返回"1970-1-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getDateTimeProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回DateTime类型的第一行第一列，如果结果为空，则返回"1970-1-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getFloat(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回float类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getFloatProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回float类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getNumber(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回int类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getNumberProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回int类型的第一行第一列，如果结果为空，则返回"-1"。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getString(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回String类型的第一行第一列，如果结果为空，则返回""。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getStringProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+             执行存储过程的查询操作 返回String类型的第一行第一列，如果结果为空，则返回""。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getTable(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行tsql(可以是带参的)查询操作 返回结果表，如果结果为空，则返回一个空的表
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.TransactionExcutor.getTableProc(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            执行存储过程的查询操作 返回结果表，如果结果为空，则返回一个空的表
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.TransactionExcutor.ProxyDataHelper">
+            <summary>
+            获取 事务执行者构造时的代理DataHelper对像
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.TransactionExcutor.Connection">
+            <summary>
+            获取 事务执行者对应的连接对像
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.TransactionExcutor.IsolationLevel">
+            <summary>
+            获取 事务执行者对应的隔离级别（事务锁定行为）
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.TransactionExcutor.Transaction">
+            <summary>
+            获取 当前事物执行者对应的事物对像。
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.TransactionScopeOption">
+            <summary>
+            Provides additional options for creating a transaction scope
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.TransactionScopeOption.Required">
+             <summary>
+            A transaction is required by the scope.It uses an ambient transaction if
+            one already exists.Otherwise, it creates a new transaction before entering
+            the scope.This is the default value.  
+             </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.TransactionScopeOption.RequiresNew">
+            <summary>
+            A new transaction is always created for the scope.
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.TransactionScopeOption.Suppress">
+             <summary>
+            The ambient transaction context is suppressed when creating the scope.All
+            operations within the scope are done without an ambient transaction context.        
+             </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.IsolationLevel">
+            <summary>
+            Specifies the isolation level of a transaction.
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.Serializable">
+            <summary>
+            Volatile data can be read but not modified, and no new data can be added
+            during the transaction.        
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.RepeatableRead">
+            <summary>
+            Volatile data can be read but not modified during the transaction.New data
+            can be added during the transaction.        
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.ReadCommitted">
+            <summary>
+            Volatile data cannot be read during the transaction, but can be modified.
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.ReadUncommitted">
+            <summary>
+            Volatile data can be read and modified during the transaction.
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.Snapshot">
+            <summary>
+            Volatile data can be read.Before a transaction modifies data, it verifies
+            if another transaction has changed the data after it was initially read.If
+            the data has been updated, an error is raised.This allows a transaction to
+            get to the previously committed value of the data.    
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.Chaos">
+            <summary>
+            The pending changes from more highly isolated transactions cannot be overwritten.
+            </summary>
+        </member>
+        <member name="F:Cocon90.Lib.Dal.Rule.IsolationLevel.Unspecified">
+             <summary>
+            A different isolation level than the one specified is being used, but the
+            level cannot be determined.An exception is thrown if this value is set.
+             </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.TransactionOptions">
+            <summary>
+            等价于System.Transactions.TransactionOptions
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.TransactionOptions.IsolationLevel">
+            <summary>
+            Gets or sets the isolation level.
+            </summary>
+            <value>
+            The isolation level.
+            </value>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.TransactionOptions.Timeout">
+            <summary>
+            A System.TimeSpan value that specifies the timeout period for the transaction
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.EffectEntry">
+            <summary>
+            受影响信息的实体
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EffectEntry.SuccessCount">
+            <summary>
+            成功执行数
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EffectEntry.FailCount">
+            <summary>
+            执行失败数
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EffectEntry.AllCount">
+            <summary>
+            所有执行数
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.IModel">
+            <summary>
+            标记接口，表示此类是模型类
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.IModel.TableName">
+            <summary>
+            获取此模型对应的表名（用于增删改查）
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.PagedModel">
+            <summary>
+            分页后的实体传递中间实体
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedModel.Table">
+            <summary>
+            分页后的表
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedModel.Total">
+            <summary>
+            记录总数
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.PagedModel`1">
+            <summary>
+             分页后的实体传递中间实体
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedModel`1.List">
+            <summary>
+            分页后的List
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedModel`1.Total">
+            <summary>
+            记录总数
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.PagedList">
+            <summary>
+             分页后的实体传递中间实体
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedList.List">
+            <summary>
+            分页后的List
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.PagedList.Total">
+            <summary>
+            记录总数
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.EditedEntry`1">
+            <summary>
+            表示已经修改过的模块
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.EditedEntry`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cocon90.Lib.Dal.Rule.EditedEntry`1"/> class.
+            </summary>
+            <param name="connectionStringName">Name of the connection string.</param>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Rule.EditedEntry`1.UpdateModel">
+            <summary>
+            向数据库中更新此变化，返回是否成功，可以添加自定义Where条件，无需where单词
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EditedEntry`1.OldDataModel">
+            <summary>
+            更改前的数据模型
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EditedEntry`1.NewDataModel">
+            <summary>
+            更改后的数据模型
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EditedEntry`1.ChangedPropertyOldValue">
+            <summary>
+            发生更改的属性和对应旧的值
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.EditedEntry`1.ChangedPropertyNewValue">
+            <summary>
+            发生更改的属性和对应的新值
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Rule.AliseEntry">
+            <summary>
+            传替参数时使用的实体，包括名称和别名
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.AliseEntry.Name">
+            <summary>
+            真实名称
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Rule.AliseEntry.Alise">
+            <summary>
+            表示别名
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Tools.DataModel`1">
+            <summary>
+            DataTable与List之间的转换
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.DataModel`1.GetList(System.Data.DataTable)">
+            <summary>
+            DataTable转实体集合
+            </summary>
+            <param name="table">数据表</param>
+            <returns>泛类列表</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.DataModel`1.GetDataTable(System.Collections.Generic.IList{`0})">
+            <summary>
+            实体集合转DataTable
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Tools.ModelHelper`1">
+            <summary>
+            实体类辅助类
+            </summary>
+            <typeparam name="T">此类型必须要有一个无参的构造函数，且实现IModel</typeparam>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.#ctor(System.String)">
+            <summary>
+            构建一个ModelHelper ，传入Config文件中的连接字符串的Name，默认使用“ConnectionString”
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.#ctor(System.String,System.String)">
+            <summary>
+            构建一个ModelHelper 
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.#ctor(Cocon90.Lib.Dal.IDataHelper)">
+            <summary>
+            构建一个ModelHelper  
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetListByCustomWhere(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            取得所有记录List，传入自定义条件。如果条件不存在，请传入NULL。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetList">
+            <summary>
+            取得所有记录List
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetList(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            由传入的Sql语句来查询出对应的List
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.ExistByCustomWhere(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            判断查询结果是否有行记录。
+            </summary>
+            <param name="customWhere">自定义Where子句，不需要加“where”单词。</param>
+            <param name="paramKeyValue">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.Exist(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            判断查询结果是否有行记录。
+            </summary>
+            <param name="tsqlParamed">Sql语句</param>
+            <param name="paramKeyValue">参数列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetList(System.Data.DataTable)">
+            <summary>
+            由DataTable返回此类型模型集合
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetListByAttribute(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的扩展属性标记取得实体集合。按主键升序排序，如果查询无结果，则返回空List。另外，customWhere中不必输入"Where";
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetListByAttribute(System.String,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的扩展属性标记取得实体集合。需要要传入排序字段，返回所有记录。如果查询无结果，则返回空List。另外，customWhere中不必输入"Where";
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetListByAttribute(System.String,System.Boolean,System.Int32,System.Int32,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的扩展属性标记取得实体集合。需要要传入排序字段，和分页信息（pageNum>=1），如果查询无结果，则返回空List。另外，customWhere中不必输入"Where";
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetOne(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            取得单个模型，如果无记录，则反回null
+            </summary>
+            <param name="tsqlParamed"></param>
+            <param name="paramKeyValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetOneByPrimeryKey(System.Object)">
+            <summary>
+            取得单个模型，如果无记录，则反回null
+            </summary>
+            <param name="tsqlParamed"></param>
+            <param name="paramKeyValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetOneByAttribute(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的扩展属性标记取得单个实体。(系统自动取主键排序)如果查询无结果，则返回NULL。另外，customWhere中不必输入"Where";
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetOneByAttribute(System.String,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的扩展属性标记取得单个实体。(请传入一个结果列的列名，作为排序字段) 如果查询无结果，则返回NULL。另外，customWhere中不必输入"Where";
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetOne(System.Data.DataTable)">
+            <summary>
+            取得表中第一行，作为单个模型，如果无记录，则反回null
+            </summary>
+            <param name="tsqlParamed"></param>
+            <param name="paramKeyValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPrimeryKey">
+            <summary>
+            取得当前Model的主键列名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPrimeryKey(System.Type)">
+            <summary>
+            取得指定Model类型对应的表主键列名
+            </summary>
+            <param name="modelType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetTableName">
+            <summary>
+            取得Model类型的表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetTableName(System.Type)">
+            <summary>
+            取得指定的Model类型的表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetRowCount(System.String)">
+            <summary>
+            取得记录总数，可以添加自定义Where子句，不需包含where单词
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.ContainsProperty(System.Type,System.String)">
+            <summary>
+            判断指定类型中是否包含指定名称的属性。属性名称区分大小写。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetColumnNames(`0,System.Boolean)">
+             <summary>
+            将Model实体映射成List集合。可以指定是否把Model中值为NULL的属性也映射进去。
+             </summary>
+             <param name="model"></param>
+             <param name="isContainNullValue"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.Add(`0)">
+            <summary>
+            添加记录（添加IModel类型实体，如果某项属性不想添加，或者使用默认值，请将该列设置为NULL或者使用默认的可空类型）
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.Add(`0,System.Int64@)">
+            <summary>
+            添加记录（添加IModel类型实体，如果某项属性不想添加，或者使用默认值，请将该列设置为NULL或者使用默认的可空类型） GeneratedKey返回自增长的主键值，出现异常时反回-1
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.EditByPrimeryKey(`0,System.Object,System.Boolean)">
+            <summary>
+            修改记录，需传入该表主键的值（修改IModel类型实体，如果某项属性不想修改，或者使用默认值，请将该列设置为NULL或者使用默认的可空类型）
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.EditByCustomWhere(`0,System.String,System.Boolean,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            修改记录，需传入自定义Where子句(不包括"where单词")，若没有Where请传NULL值（修改IModel类型实体，如果某项属性不想修改，或者使用默认值，请将该列设置为NULL或者使用默认的可空类型）
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.DeleteByPrimeryKey(System.Object)">
+            <summary>
+            删除记录，传入主键值。
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.DeleteByModel(`0)">
+            <summary>
+            删除记录，删除IModel类型实体，除主键之处全传入null即可。
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.DeleteByCustomWhere(System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            删除记录，传入自定义Where子句（不包括where单词）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.IsModelEqual(`0,`0)">
+            <summary>
+            判断两个模型的值 是否一一对应相等。
+            </summary>
+            <param name="oldModel"></param>
+            <param name="newModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPagedInfo(System.String[],System.String[],System.String,System.Boolean,System.Int32,System.Int32,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            取得多表联合查询的分页信息。
+            </summary>
+            <param name="tableNameWithAliasArray">多表的表名及别名，中间用空格隔开，如：new string[]{"studentTab st","teacherTab as tt"}，也可以直接传入“"studentTab st,teacherTab tt".Split(',')”</param>
+            <param name="selectColumnNameWithAlias">多表的查询列，中间用空格隔开，如：new string[]{"name 姓名","age 性别","(select count(*) from XXXTab) as 总数"}，也可以直接传入“"name 姓名,age 性别,(select count(*) from XXXTab) as 总数".Split(',')”</param>
+            <param name="orderColumnName">排序列的列名，此列名一般是存在于查询列中的一员</param>
+            <param name="isAsc">是否升序排列，升序则为true,降序则为false</param>
+            <param name="pageNumber">返回第几页</param>
+            <param name="pageSize">每页记录总数</param>
+            <param name="customWhere">自定义的Where子句，如果没有，请传入Null或空字符串</param>
+            <param name="paramKeyValue">依次传入自定义Where子句中的参数。参数中请使用@做为参数，如： new Parameter("@name","宋兴柱")</param>
+            <returns>返回当前页的DataTable以及实际数据的总数</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPagedInfo(System.String,System.Boolean,System.Int32,System.Int32,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            分页取得实体所对应表中的数据集合和总记录数，传入排序方式，是否升序，页数，每页大小，自定义Where子句（不用加关键字'where'，没有请传NULL或""），Where子句中的参数列表。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPagedInfoView(System.String[],System.String[],System.String,System.Boolean,System.Int32,System.Int32,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            取得多表联合查询的分页信息。泛型 T 可以使用实体对像的子类。
+            </summary>
+            <param name="tableNameWithAliasArray">多表的表名及别名，中间用空格隔开，如：new string[]{"studentTab st","teacherTab as tt"}，也可以直接传入“"studentTab st,teacherTab tt".Split(',')”</param>
+            <param name="selectColumnNameWithAlias">多表的查询列，中间用空格隔开，如：new string[]{"name 姓名","age 性别","(select count(*) from XXXTab) as 总数"}，也可以直接传入“"name 姓名,age 性别,(select count(*) from XXXTab) as 总数".Split(',')”</param>
+            <param name="orderColumnName">排序列的列名，此列名一般是存在于查询列中的一员</param>
+            <param name="isAsc">是否升序排列，升序则为true,降序则为false</param>
+            <param name="pageNumber">返回第几页</param>
+            <param name="pageSize">每页记录总数</param>
+            <param name="customWhere">自定义的Where子句，如果没有，请传入Null或空字符串</param>
+            <param name="paramKeyValue">依次传入自定义Where子句中的参数。参数中请使用@做为参数，如：new Parameter("@name","宋兴柱")</param>
+            <returns>返回当前页的List以及实际数据的总数</returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetPagedInfoViewUseAttrbute(System.String,System.Boolean,System.Int32,System.Int32,System.String,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            通过实体的属性标记如：Cocon90.Lib.Dal.Rule.DataFromAttribute("UnitTab", "UnitName", "UnitId", "CUnitId")，自动联合多表查询的分页信息。泛型 T 可以使用实体对像的子类。
+            参数请依次传入：分页排序字段、是否升序、请求第几页数据、每页多少条数据、自定义Where子句，如果没有请传入NULL或者空字符串、依次传入自定义Where子句中的参数。参数中请使用@做为参数
+            </summary>
+            <param name="orderColumnName">分页排序字段</param>
+            <param name="isAsc">是否升序</param>
+            <param name="pageNumber">请求第几页数据</param>
+            <param name="pageSize">每页多少条数据</param>
+            <param name="customWhere">自定义Where子句，如果没有请传入NULL或者空字符串</param>
+            <param name="paramKeyValue">依次传入自定义Where子句中的参数。参数中请使用@做为参数，如：new Parameter("@name","宋兴柱")</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.UpdateSchemaToDataBase(Cocon90.Lib.Dal.Rule.SqlBatch[])">
+            <summary>
+            生成表到数据库，如果库中表已经存在，则追加列。appendSqlWhenCreate是首次建表后后要执行的语句。
+            </summary>
+            <param name="appendSqlWhenCreate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetInsertSqlByModel(`0)">
+            <summary>
+            获取Insert插入语句
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetUpdateSqlByPrimeryKey(`0,System.Object,System.Boolean)">
+            <summary>
+            获取Update语句
+            </summary>
+            <param name="model"></param>
+            <param name="primeryKeyValue"></param>
+            <param name="isNullMeansNotChange"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.ModelHelper`1.GetUpdateSqlByCustomWhere(`0,System.String,System.Boolean,Cocon90.Lib.Dal.Rule.Parameter[])">
+            <summary>
+            取得Update语句
+            </summary>
+            <param name="model"></param>
+            <param name="customWhereStirng"></param>
+            <param name="isNullMeansNotChange"></param>
+            <param name="whereParas"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.ModelHelper`1.SqlHelper">
+            <summary>
+            获到当前的SqlHelper辅助类实例
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.ModelHelper`1.DataHelper">
+            <summary>
+            获取一个DataHelper实例（由本类的构造函数指定配置的连接语句名称。）
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.ModelHelper`1.dh">
+            <summary>
+            DataHelper属性的简写。  用于获取一个DataHelper实例（由本类的构造函数指定配置的连接语句名称。）
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.ModelHelper`1.sh">
+            <summary>
+            SqlHelper属性的简写
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Tools.SqlHelper">
+            <summary>
+            SQL语句辅助类，语句中用到的参数，请统一使用"@"符号。系统将自动为相应数据库引擎转换。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.#ctor(Cocon90.Lib.Dal.IDataHelper)">
+            <summary>
+            指定SqlHelper中相关语句所使用的DataHelper
+            </summary>
+            <param name="dataHelper"></param>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getPagedSql(System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            返回分页字符串 ，依次传入：源Sql语句（此Sql语句不能包含Order By），排序列名(此列名必须是源语句执行后展示出来的有效列名)，是否升序，显示页数（从1开始），第页数据量
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getPagedSql(Cocon90.Lib.Dal.IDataHelper,System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            返回分页字符串 ，依次传入相应的IDataHelper,源Sql语句（此Sql语句不能包含Order By），排序列名(此列名必须是源语句执行后展示出来的有效列名)，是否升序，显示页数（从1开始），第页数据量
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getOrderBySql(System.String,System.String,System.Boolean)">
+            <summary>
+            返回排序字符串(对子表查询语句进行二次排序)，传入指定排序列名、是否升序
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAddSql(System.Object[])">
+            <summary>
+            用于插入数据，自动将传和的参数按格式排列。如addSql("1", 2, 3.5f, DateTime.Now, true, null, DBNull.Value)，将返回'1',2,3.5,'2014-09-25 10:52:23',1,NULL,''。（如果值为bool，将自动将它换成数字0或1。）
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAddSqlParam(System.Collections.Generic.List{System.String})">
+            <summary>
+            自动生成"@Column1,@Columns2,@Column3"字符串
+            </summary>
+            <param name="columnName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getEditSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            用于修改数据，自动将传入的参数按格式排列。如传入 dic.Add("aaa", 1); dic.Add("bbb", "bbbb"); dic.Add("ccc", DateTime.Now); dic.Add("ddd", true); dic.Add("eee", DBNull.Value);，将返回aaa=1,bbb='bbbb',ccc='2014-09-25 13:54:58',ddd=1,eee=''。（如果值为bool，将自动将它换成数字0或1。）
+            </summary>
+            <param name="ColumnsAndValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getEditSqlParam(System.Collections.Generic.List{System.String})">
+            <summary>
+            用于修改数据，自动生成Column1=@Column1,Column2=@Column2,Column3=@Column3
+            </summary>
+            <param name="ColumnsAndValue"></param>
+            <returns></returns>
+        </member>
+        <!-- 对于成员“M:Cocon90.Lib.Dal.Tools.SqlHelper.getWhereSql(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)”忽略有格式错误的 XML 注释 -->
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getWhereLikeSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            用于条件语句数据，传出模糊查询的语句如： XXX like '%abc%' and YYY is null
+            </summary>
+            <param name="ColumnsAndValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getWhereSqlParam(System.Collections.Generic.List{System.String})">
+            <summary>
+            用于条件语句数据，自动生成"Column1=@Column1 and Column2=@Column2 and Column3=@Column3"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getWhereSqlParam(System.Collections.Generic.List{Cocon90.Lib.Dal.Rule.AliseEntry})">
+            <summary>
+            用于条件语句数据，自动生成:
+            "alise1.Column1=@alise1Column1 and alise1.Column2=@alise1Column2 and alise2.Column1=@alise2Column1"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAliseSql(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            用于查询数据，生成别名语句返回“col1 alise1,col2 alise2”
+            </summary>
+            <param name="ColumnsAsName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAliseSql(System.Collections.Generic.List{Cocon90.Lib.Dal.Rule.AliseEntry})">
+            <summary>
+            用于查询数据，生成别名语句返回“col1 alise1,col2 alise2”
+            </summary>
+            <param name="ColumnsAsName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAliseSql(System.String[],System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            用于查询数据，生成别名语句返回“tab1.col1 alise1,tab2.col2 alise2”
+            </summary>
+            <param name="ColumnsAsName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getAliseSql(System.String[],System.Collections.Generic.List{Cocon90.Lib.Dal.Rule.AliseEntry})">
+            <summary>
+            用于查询数据，生成别名语句返回“tab1.col1 alise1,tab2.col2 alise2”
+            </summary>
+            <param name="ColumnsAsName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getSelectSql(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            生成查询数据sql 如果有where则添加where子句(不包括where单词)，没有请传null。最后生成：select XXX as YYY from TABLENAME where WHERE
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getInsertSql(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            生成插入数据的Sql（传入表名，和列名及新值）
+            </summary>
+            <param name="tableName"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getInsertSqlParam(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            生成插入数据的Sql（传入表名，和列名） 生成：insert into TABLENAME(col1,col2,col3) values(@col1,@col2,@col3)
+            </summary>
+            <param name="tableName"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getUpdateSql(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            生成更新数据的sql 如果有where则添加where子句(不包括where单词)，没有请传null。
+            </summary>
+            <param name="tableName"></param>
+            <param name="where"></param>
+            <param name="ColumnsAndValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getUpdateSqlParam(System.String,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            生成更新数据的sql 如果有where则添加where子句(不包括where单词)，没有请传null。自动生成：update TABLENAME set col1=@col1,col2=@col2 where XXX
+            </summary>
+            <param name="tableName"></param>
+            <param name="where"></param>
+            <param name="ColumnsAndValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getDeleteSql(System.String,System.String)">
+            <summary>
+            生成删除数据sql  如果有where则添加where子句(不包括where单词)，没有请传null。
+            </summary>
+            <param name="tableName"></param>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getDeleteSqlParam(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            生成删除数据sql 传入条件数组， 最后生成 delete from TABLENAME where XX=XX and YY=YY
+            </summary>
+            <param name="tableName"></param>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getPrimeryKey(System.String)">
+            <summary>
+            取得获取批定表的主键的例名（只获取第1个）  指定的表可以包含架构名，如：dbo.Address或guest.Address ，需要注意的是，此方法内部会调用IDataHelper对像，会使用SetDataHelperForDBType属性中的值去执行角本,如果该对像为空，将自动抛出异常。
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getPrimeryKeyList(System.String)">
+            <summary>
+            取得主键列表 争对一张表有多个主键的情况。 
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getPrimeryKeyList(Cocon90.Lib.Dal.IDataHelper,System.String)">
+            <summary>
+            取得主键列表 争对一张表有多个主键的情况。传入DataHelper对像（用于判断数据库类型），和表名。
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getSQLServerPrimeryKeySql(System.String)">
+            <summary>
+            取得获取SQLServer数据库中获取主键的SQL原角本
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getJoinQuery(Cocon90.Lib.Dal.Rule.AliseEntry[],System.Collections.Generic.Dictionary{System.String,System.String}[],System.String)">
+            <summary>
+            生成多表联合查询语句,需入多个表的列名和查询后要使用的别名，注意，Where子句不用写“where”单词
+            返回：select 别名1.Column1 列1,别名1.Column2 列2, 别名2.Column1 列3 from table1 别名1,table2 别名2 where 别名1.列1=别名2.列1 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getJoinQueryParam(Cocon90.Lib.Dal.Rule.AliseEntry[],System.Collections.Generic.Dictionary{System.String,System.String}[],System.Collections.Generic.List{Cocon90.Lib.Dal.Rule.AliseEntry},System.String)">
+            <summary>
+            生成多表联合查询语句,需入多个表的列名和查询后要使用的别名，注意，Where子句不用写“where”单词，还可以添加自定义where子句
+            返回：select 别名1.Column1 列1,别名1.Column2 列2, 别名2.Column1 列3 from table1 别名1,table2 别名2 where 别名1.列1=@别名1列1 and 别名2.列1=@别名2列1  
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getLastInsertRowSql">
+            <summary>
+            取得最近一次插入记录的主键标记。自动调用SetDataHelperForDBType的数据类型。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getLastInsertRowSql(Cocon90.Lib.Dal.IDataHelper)">
+            <summary>
+            取得最近一次插入记录的主键标记。传入数据库类型IDataHelper对像。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getTopOrLimitRecord(Cocon90.Lib.Dal.IDataHelper,System.String,System.Int32)">
+            <summary>
+            传入数据库类型（IDataHelper对像），和源SQL句。将被包裹成如:select top 1 from (源Select的SQL语句) tempDataTable
+            </summary>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getTopOrLimitRecord(System.String,System.Int32)">
+            <summary>
+            传入源SQL句。将被包裹成如:select top 1 from (源Select的SQL语句) tempDataTable
+            </summary>
+            <param name="sourceSql"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getTableSchema(Cocon90.Lib.Dal.IDataHelper,System.String,System.String)">
+            <summary>
+            获取表结构
+            </summary>
+            <param name="dataHelper"></param>
+            <param name="tableName"></param>
+            <param name="schemaName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.getTableSchema(System.String,System.String)">
+            <summary>
+            取得表结构
+            </summary>
+            <param name="tableName"></param>
+            <param name="schemaName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.safeName(Cocon90.Lib.Dal.IDataHelper,System.String)">
+            <summary>
+            使用特殊字符包围，一般用于处理特殊名称的表名或列名。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.safeName(System.String)">
+            <summary>
+            使用特殊字符包围，一般用于处理特殊名称的表名或列名。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.GetTypeToDbTypeMapping(System.Type,System.Int32)">
+            <summary>
+            取得C#类型和数据库的映射关系。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cocon90.Lib.Dal.Tools.SqlHelper.GetTypeToDbTypeMapping(Cocon90.Lib.Dal.IDataHelper,System.Type,System.Int32)">
+            <summary>
+            取得C#类型和数据库的映射关系。
+            </summary>
+        </member>
+        <member name="P:Cocon90.Lib.Dal.Tools.SqlHelper.DataHelper">
+            <summary>
+            获取或设置 当前SqlHelper中相关语句所使用的DataHelper
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.OdbcDataHelper">
+            <summary>
+            Odbc数据操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.OledbDataHelper">
+            <summary>
+            Oledb数据库操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.PostgreSqlDataHelper">
+            <summary>
+            PostgreSql数据库操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.SQLDataHelper">
+            <summary>
+            Ms SQLServer数据库操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.FirebirdDataHelper">
+            <summary>
+            Firebird数据操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.SqlCeDataHelper">
+            <summary>
+            SqlCe数据操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.SQLiteDataHelper">
+            <summary>
+            SQLite数据操作实例
+            </summary>
+        </member>
+        <member name="T:Cocon90.Lib.Dal.Utility.MySqlDataHelper">
+            <summary>
+            MySql DataHelper
+            </summary>
+        </member>
+    </members>
+</doc>

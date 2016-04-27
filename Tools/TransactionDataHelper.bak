@@ -1,0 +1,100 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+
+namespace Cocon90.Lib.Dal.Tools
+{
+    /// <summary>
+    /// 事务执行者对像，继承自DataHelper类，但是需要传入一个新的代理DataHelper来构造。
+    /// </summary>
+    public class TransactionDataHelper
+    {
+        /// <summary>
+        /// 在某个DataHelper上，构造一个事务执行者,并开始事务。
+        /// </summary>
+        public TransactionDataHelper(IDataHelper dataHelper)
+        {
+            this.ProxyDataHelper = dataHelper;
+            this.Connection = dataHelper.createConnection();
+            this.Transaction = this.Connection.BeginTransaction();
+        }
+        /// <summary>
+        /// 在某个DataHelper上，构造一个事务执行者,并开始事务。可以传入隔离级别（事务锁定行为）
+        /// </summary>
+        public TransactionDataHelper(IDataHelper dataHelper, System.Data.IsolationLevel isolationLevel)
+        {
+            this.ProxyDataHelper = dataHelper;
+            this.Connection = dataHelper.createConnection();
+            this.Transaction = this.Connection.BeginTransaction(isolationLevel);
+        }
+        /// <summary>
+        /// 获取 事务执行者构造时的代理DataHelper对像
+        /// </summary>
+        public IDataHelper ProxyDataHelper { get; private set; }
+        /// <summary>
+        /// 获取 事务执行者对应的连接对像
+        /// </summary>
+        public DbConnection Connection { get; private set; }
+        /// <summary>
+        /// 获取 事务执行者对应的隔离级别（事务锁定行为）
+        /// </summary>
+        public System.Data.IsolationLevel IsolationLevel { get { return this.Transaction.IsolationLevel; } }
+        /// <summary>
+        /// 获取 当前事物执行者对应的事物对像。
+        /// </summary>
+        public DbTransaction Transaction { get; private set; }
+
+        /// <summary>
+        /// 执行Transaction对像的事务回滚操作，并释放连接对象
+        /// </summary>
+        public void Rollback()
+        {
+            this.Transaction.Rollback();
+            if (Connection != null && Connection.State != ConnectionState.Closed) { Connection.Close(); Connection.Dispose(); }
+        }
+        /// <summary>
+        /// 执行Transaction对像的事务提交操作，并释放连接对象
+        /// </summary>
+        public void Commit()
+        {
+            this.Transaction.Commit();
+            if (Connection != null && Connection.State != ConnectionState.Closed) { Connection.Close(); Connection.Dispose(); }
+        }
+
+        /// <summary>
+        /// 返回一个DbCommand对像
+        /// </summary>
+        private DbCommand createCommond(string tsqlParamed, System.Data.CommandType commandType, params DbParameter[] paramKeyAndValue)
+        {
+            var cmd = ProxyDataHelper.createCommond(tsqlParamed, commandType, paramKeyAndValue);
+            cmd.Connection = this.Connection;
+            cmd.Transaction = this.Transaction;
+            return cmd;
+        }
+        /// <summary>
+        /// 创建一个DbDataAdapter对像
+        /// </summary>
+        private DbDataAdapter createDataAdapter(DbCommand selectCmd)
+        {
+            return ProxyDataHelper.createDataAdapter(selectCmd);
+        }
+        /// <summary>
+        /// 创建一个DbParameter对像
+        /// </summary>
+        private DbParameter createParameter(string key, object value)
+        {
+            return ProxyDataHelper.createParameter(key, value);
+        }
+        #region 常用执行方法体
+        public virtual int execNoQuery(string tsqlParamed, params System.Data.Common.DbParameter[] paramKeyAndValue)
+        {
+            var cmd = createCommond(tsqlParamed, CommandType.Text, paramKeyAndValue);
+            int temp = cmd.ExecuteNonQuery();
+            return temp;
+        }
+        #endregion
+    }
+}
